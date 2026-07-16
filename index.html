@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Catálogo online Patitas Ya - alimentos y productos para mascotas con delivery." />
+  <title>Patitas Ya | Catálogo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Inicio Patitas Ya">
+      <div class="brand-icon">🐾</div>
+      <div>
+        <strong>Patitas Ya</strong>
+        <span>Delivery para tus mascotas</span>
+      </div>
+    </a>
+
+    <button class="cart-button" id="openCart" aria-label="Abrir carrito">
+      🛒
+      <span>Carrito</span>
+      <b id="cartCount">0</b>
+    </button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <span class="eyebrow">DESPACHO A DOMICILIO</span>
+        <h1>Todo para tus regalones, directo a tu puerta.</h1>
+        <p>Alimentos, snacks, higiene y accesorios para perros y gatos.</p>
+
+        <div class="hero-actions">
+          <a href="#productos" class="primary-button">Ver productos</a>
+          <a href="https://wa.me/56900000000" class="secondary-button" target="_blank" rel="noopener">
+            Hablar por WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="pet-circle">🐶</div>
+        <div class="pet-circle second">🐱</div>
+        <span>Precios convenientes</span>
+        <strong>Sin costo de local físico</strong>
+      </div>
+    </section>
+
+    <section class="benefits">
+      <article>
+        <span>🚚</span>
+        <div>
+          <strong>Delivery local</strong>
+          <p>Coordinamos el despacho contigo.</p>
+        </div>
+      </article>
+      <article>
+        <span>💬</span>
+        <div>
+          <strong>Compra simple</strong>
+          <p>Envía tu pedido por WhatsApp.</p>
+        </div>
+      </article>
+      <article>
+        <span>💰</span>
+        <div>
+          <strong>Buenos precios</strong>
+          <p>Ahorro directo para nuestros clientes.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="catalog-section" id="productos">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">NUESTRO CATÁLOGO</span>
+          <h2>Productos destacados</h2>
+        </div>
+
+        <label class="search-box">
+          <span>🔎</span>
+          <input type="search" id="searchInput" placeholder="Buscar alimento, snack, arena..." />
+        </label>
+      </div>
+
+      <div class="category-buttons" id="categoryButtons">
+        <button class="category active" data-category="Todos">Todos</button>
+        <button class="category" data-category="Perros">Perros</button>
+        <button class="category" data-category="Gatos">Gatos</button>
+        <button class="category" data-category="Snacks">Snacks</button>
+        <button class="category" data-category="Higiene">Higiene</button>
+        <button class="category" data-category="Accesorios">Accesorios</button>
+      </div>
+
+      <div class="results-line">
+        <p id="resultsCount">0 productos</p>
+        <select id="sortSelect" aria-label="Ordenar productos">
+          <option value="default">Orden recomendado</option>
+          <option value="price-asc">Menor precio</option>
+          <option value="price-desc">Mayor precio</option>
+          <option value="name">Nombre A-Z</option>
+        </select>
+      </div>
+
+      <div class="product-grid" id="productGrid"></div>
+      <div class="empty-state hidden" id="emptyState">
+        <span>🐾</span>
+        <h3>No encontramos productos</h3>
+        <p>Prueba con otra búsqueda o categoría.</p>
+      </div>
+    </section>
+  </main>
+
+  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-header">
+      <div>
+        <span class="eyebrow">TU PEDIDO</span>
+        <h2>Carrito</h2>
+      </div>
+      <button id="closeCart" class="icon-button" aria-label="Cerrar carrito">✕</button>
+    </div>
+
+    <div class="cart-items" id="cartItems"></div>
+
+    <div class="cart-empty" id="cartEmpty">
+      <span>🛒</span>
+      <p>Tu carrito está vacío.</p>
+    </div>
+
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total estimado</span>
+        <strong id="cartTotal">$0</strong>
+      </div>
+      <button class="whatsapp-button" id="checkoutButton">
+        Enviar pedido por WhatsApp
+      </button>
+      <small>El valor del despacho se confirma según tu ubicación.</small>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <footer>
+    <div class="brand footer-brand">
+      <div class="brand-icon">🐾</div>
+      <div>
+        <strong>Patitas Ya</strong>
+        <span>Delivery para tus mascotas</span>
+      </div>
+    </div>
+    <p>Catálogo referencial. Stock y despacho sujetos a confirmación.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
