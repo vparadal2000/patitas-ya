@@ -1,8 +1,8 @@
 [
   {
     "id": 1,
-    "name": "Alimento Premium Perro Adulto",
-    "brand": "Marca ejemplo",
+    "name": "Alimento Premium Perro Adulto ALASKA",
+    "brand": "ALASKA",
     "category": "Perros",
     "stage": "Adulto",
     "weight": "15 kg",
@@ -12,11 +12,11 @@
       "Proteína de calidad",
       "Formato familiar"
     ],
-    "price": 32990,
-    "oldPrice": 36990,
+    "price": 45990,
+    "oldPrice": 47990,
     "stock": 8,
     "featured": true,
-    "image": "images/alimento-perro-adulto.webp"
+    "image": "images/ALASKA15KG.jpg"
   },
   {
     "id": 2,
