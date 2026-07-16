@@ -20,22 +20,22 @@
   },
   {
     "id": 2,
-    "name": "Alimento para Gato Adulto",
-    "brand": "Marca ejemplo",
-    "category": "Gatos",
+    "name": "Alimento para Perro Adulto",
+    "brand": "BOKATO",
+    "category": "Perros",
     "stage": "Adulto",
     "weight": "10 kg",
-    "description": "Alimento para gatos adultos, formulado para una nutrición equilibrada.",
+    "description": "Alimento para perros adultos, formulado para una nutrición equilibrada.",
     "benefits": [
       "Sabor atractivo",
       "Nutrición equilibrada",
       "Pelaje saludable"
     ],
-    "price": 28990,
+    "price": 56990,
     "oldPrice": null,
     "stock": 5,
     "featured": true,
-    "image": "images/alimento-gato-adulto.webp"
+    "image": "images\bokato image.jpg"
   },
   {
     "id": 3,
