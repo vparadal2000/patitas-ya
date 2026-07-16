@@ -1,274 +1,225 @@
-const products = [
-  {
-    id: 1,
-    name: "Alimento Premium Perro Adulto",
-    category: "Perros",
-    description: "Bolsa de 15 kg, fórmula completa para perros adultos.",
-    price: 32990,
-    emoji: "🐶",
-    badge: "Más vendido"
-  },
-  {
-    id: 2,
-    name: "Alimento Gato Adulto",
-    category: "Gatos",
-    description: "Bolsa de 10 kg, sabor pollo y salmón.",
-    price: 28990,
-    emoji: "🐱",
-    badge: "Destacado"
-  },
-  {
-    id: 3,
-    name: "Snack Dental para Perros",
-    category: "Snacks",
-    description: "Ayuda al cuidado dental y combate el mal aliento.",
-    price: 4990,
-    emoji: "🦴",
-    badge: ""
-  },
-  {
-    id: 4,
-    name: "Arena Sanitaria Aglomerante",
-    category: "Higiene",
-    description: "Arena de alta absorción, formato 10 kg.",
-    price: 8990,
-    emoji: "🪣",
-    badge: "Oferta"
-  },
-  {
-    id: 5,
-    name: "Correa Reforzada",
-    category: "Accesorios",
-    description: "Correa resistente para paseos seguros.",
-    price: 6990,
-    emoji: "🦮",
-    badge: ""
-  },
-  {
-    id: 6,
-    name: "Snack Cremoso para Gatos",
-    category: "Snacks",
-    description: "Pack de premios cremosos, sabor atún.",
-    price: 3990,
-    emoji: "🐟",
-    badge: ""
-  },
-  {
-    id: 7,
-    name: "Shampoo Suave para Mascotas",
-    category: "Higiene",
-    description: "Limpieza suave para perros y gatos, 500 ml.",
-    price: 5990,
-    emoji: "🧴",
-    badge: ""
-  },
-  {
-    id: 8,
-    name: "Cama Acolchada Mediana",
-    category: "Accesorios",
-    description: "Cama cómoda y lavable para mascotas medianas.",
-    price: 18990,
-    emoji: "🛏️",
-    badge: "Nuevo"
-  }
-];
-
+let products = [];
+let cart = JSON.parse(localStorage.getItem("patitasYaCartV2")) || [];
 let selectedCategory = "Todos";
 let searchTerm = "";
-let sortType = "default";
-let cart = JSON.parse(localStorage.getItem("patitasYaCart")) || [];
+let currentSort = "recommended";
 
-const productGrid = document.getElementById("productGrid");
-const resultsCount = document.getElementById("resultsCount");
-const emptyState = document.getElementById("emptyState");
-const searchInput = document.getElementById("searchInput");
-const sortSelect = document.getElementById("sortSelect");
-const categoryButtons = document.getElementById("categoryButtons");
-const cartDrawer = document.getElementById("cartDrawer");
-const overlay = document.getElementById("overlay");
-const cartItems = document.getElementById("cartItems");
-const cartEmpty = document.getElementById("cartEmpty");
-const cartCount = document.getElementById("cartCount");
-const cartTotal = document.getElementById("cartTotal");
+const $ = id => document.getElementById(id);
+const formatCLP = value => new Intl.NumberFormat("es-CL",{style:"currency",currency:"CLP",maximumFractionDigits:0}).format(value);
 
-function formatCLP(value) {
-  return new Intl.NumberFormat("es-CL", {
-    style: "currency",
-    currency: "CLP",
-    maximumFractionDigits: 0
-  }).format(value);
+async function loadProducts(){
+  try{
+    const response = await fetch("productos.json");
+    if(!response.ok) throw new Error("No se pudo cargar productos.json");
+    products = await response.json();
+    fillBrands();
+    renderProducts();
+    renderCart();
+  }catch(error){
+    $("resultsCount").textContent = "No fue posible cargar el catálogo.";
+    $("productGrid").innerHTML = `<div class="empty"><h3>Error al cargar productos</h3><p>${error.message}</p></div>`;
+  }
 }
 
-function getFilteredProducts() {
-  let filtered = products.filter(product => {
-    const matchesCategory =
-      selectedCategory === "Todos" ||
-      product.category === selectedCategory ||
-      (selectedCategory === "Perros" && product.name.toLowerCase().includes("perro")) ||
-      (selectedCategory === "Gatos" && product.name.toLowerCase().includes("gato"));
+function fillBrands(){
+  const brands = [...new Set(products.map(p=>p.brand))].sort();
+  $("brandFilter").innerHTML = `<option value="Todas">Todas las marcas</option>`+
+    brands.map(b=>`<option value="${b}">${b}</option>`).join("");
+}
 
-    const searchableText = `${product.name} ${product.description} ${product.category}`.toLowerCase();
-    const matchesSearch = searchableText.includes(searchTerm.toLowerCase());
+function stockStatus(stock){
+  if(stock<=0) return {text:"Sin stock",class:"out-stock"};
+  if(stock<=3) return {text:"Poco stock",class:"low-stock"};
+  return {text:"Disponible",class:""};
+}
 
-    return matchesCategory && matchesSearch;
+function filteredProducts(){
+  const brand = $("brandFilter").value;
+  const stock = $("stockFilter").value;
+  const maxPrice = Number($("priceFilter").value);
+
+  let data = products.filter(p=>{
+    const text = `${p.name} ${p.brand} ${p.category} ${p.stage} ${p.weight}`.toLowerCase();
+    const categoryMatch = selectedCategory==="Todos" || p.category===selectedCategory ||
+      (selectedCategory==="Perros" && `${p.stage} ${p.name}`.toLowerCase().includes("perro")) ||
+      (selectedCategory==="Gatos" && `${p.stage} ${p.name}`.toLowerCase().includes("gato"));
+    const stockMatch = stock==="Todos" ||
+      (stock==="Disponible" && p.stock>0) ||
+      (stock==="Poco stock" && p.stock>0 && p.stock<=3);
+    return categoryMatch && text.includes(searchTerm.toLowerCase()) &&
+      (brand==="Todas" || p.brand===brand) && stockMatch && p.price<=maxPrice;
   });
 
-  if (sortType === "price-asc") filtered.sort((a, b) => a.price - b.price);
-  if (sortType === "price-desc") filtered.sort((a, b) => b.price - a.price);
-  if (sortType === "name") filtered.sort((a, b) => a.name.localeCompare(b.name));
-
-  return filtered;
+  if(currentSort==="priceAsc") data.sort((a,b)=>a.price-b.price);
+  if(currentSort==="priceDesc") data.sort((a,b)=>b.price-a.price);
+  if(currentSort==="name") data.sort((a,b)=>a.name.localeCompare(b.name));
+  if(currentSort==="recommended") data.sort((a,b)=>Number(b.featured)-Number(a.featured));
+  return data;
 }
 
-function renderProducts() {
-  const filtered = getFilteredProducts();
-
-  productGrid.innerHTML = filtered.map(product => `
-    <article class="product-card">
-      <div class="product-image">
-        ${product.badge ? `<span class="badge">${product.badge}</span>` : ""}
-        <span aria-hidden="true">${product.emoji}</span>
+function renderProducts(){
+  const data = filteredProducts();
+  $("resultsCount").textContent = `${data.length} producto${data.length===1?"":"s"}`;
+  $("emptyState").classList.toggle("hidden",data.length>0);
+  $("productGrid").innerHTML = data.map(p=>{
+    const status=stockStatus(p.stock);
+    return `<article class="product-card">
+      <div class="product-image" onclick="openProduct(${p.id})">
+        ${p.featured?'<span class="badge">Destacado</span>':""}
+        <span class="stock-badge ${status.class}">${status.text}</span>
+        <img src="${p.image}" alt="${p.name}" onerror="this.classList.add('image-error')">
+        <div class="image-placeholder">Sube la imagen:<br><strong>${p.image}</strong></div>
       </div>
       <div class="product-info">
-        <span class="product-category">${product.category}</span>
-        <h3>${product.name}</h3>
-        <p>${product.description}</p>
-        <div class="product-bottom">
-          <span class="product-price">${formatCLP(product.price)}</span>
-          <button class="add-button" onclick="addToCart(${product.id})" aria-label="Agregar ${product.name}">
-            +
-          </button>
+        <span class="meta">${p.brand} · ${p.weight}</span>
+        <h3 onclick="openProduct(${p.id})">${p.name}</h3>
+        <p>${p.stage}</p>
+        <div class="price-row"><span class="price">${formatCLP(p.price)}</span>${p.oldPrice?`<span class="old-price">${formatCLP(p.oldPrice)}</span>`:""}</div>
+        <div class="product-actions">
+          <button class="detail-button" onclick="openProduct(${p.id})">Ver detalles</button>
+          <button class="add-button" onclick="addToCart(${p.id})" ${p.stock<=0?"disabled":""}>+</button>
         </div>
       </div>
-    </article>
-  `).join("");
-
-  resultsCount.textContent = `${filtered.length} producto${filtered.length === 1 ? "" : "s"}`;
-  emptyState.classList.toggle("hidden", filtered.length > 0);
+    </article>`;
+  }).join("");
 }
 
-function addToCart(productId) {
-  const existing = cart.find(item => item.id === productId);
-
-  if (existing) {
-    existing.quantity += 1;
-  } else {
-    cart.push({ id: productId, quantity: 1 });
-  }
-
-  saveAndRenderCart();
-  openCart();
+function openProduct(id){
+  const p=products.find(x=>x.id===id);
+  if(!p)return;
+  const status=stockStatus(p.stock);
+  $("productDetail").innerHTML=`<div class="product-detail">
+    <div class="detail-image"><img src="${p.image}" alt="${p.name}"></div>
+    <div class="detail-copy">
+      <span class="meta">${p.brand} · ${p.category} · ${p.weight}</span>
+      <h2>${p.name}</h2>
+      <span class="stock-badge ${status.class}" style="position:static;display:inline-block">${status.text}</span>
+      <p class="description">${p.description}</p>
+      <strong>Características</strong>
+      <ul>${p.benefits.map(b=>`<li>${b}</li>`).join("")}</ul>
+      <div class="price-row"><span class="price">${formatCLP(p.price)}</span>${p.oldPrice?`<span class="old-price">${formatCLP(p.oldPrice)}</span>`:""}</div>
+      <button class="add-detail" onclick="addToCart(${p.id});closeModal('productModal')" ${p.stock<=0?"disabled":""}>Agregar al carrito</button>
+    </div>
+  </div>`;
+  openModal("productModal");
 }
 
-function changeQuantity(productId, amount) {
-  const item = cart.find(item => item.id === productId);
-  if (!item) return;
-
-  item.quantity += amount;
-
-  if (item.quantity <= 0) {
-    cart = cart.filter(cartItem => cartItem.id !== productId);
-  }
-
-  saveAndRenderCart();
+function addToCart(id){
+  const p=products.find(x=>x.id===id);
+  if(!p || p.stock<=0)return;
+  const existing=cart.find(x=>x.id===id);
+  if(existing && existing.quantity<p.stock) existing.quantity++;
+  else if(!existing) cart.push({id,quantity:1});
+  saveCart();
 }
 
-function saveAndRenderCart() {
-  localStorage.setItem("patitasYaCart", JSON.stringify(cart));
+function changeQuantity(id,delta){
+  const item=cart.find(x=>x.id===id);
+  const product=products.find(x=>x.id===id);
+  if(!item||!product)return;
+  item.quantity=Math.min(item.quantity+delta,product.stock);
+  if(item.quantity<=0) cart=cart.filter(x=>x.id!==id);
+  saveCart();
+}
+
+function saveCart(){
+  localStorage.setItem("patitasYaCartV2",JSON.stringify(cart));
   renderCart();
 }
 
-function renderCart() {
-  const detailedCart = cart.map(item => ({
-    ...products.find(product => product.id === item.id),
-    quantity: item.quantity
-  }));
-
-  const totalItems = detailedCart.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = detailedCart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-  cartCount.textContent = totalItems;
-  cartTotal.textContent = formatCLP(totalPrice);
-
-  cartItems.innerHTML = detailedCart.map(item => `
-    <div class="cart-item">
-      <div class="cart-item-image">${item.emoji}</div>
-      <div>
-        <h4>${item.name}</h4>
-        <span class="cart-item-price">${formatCLP(item.price)} c/u</span>
-      </div>
-      <div class="quantity-control">
-        <button onclick="changeQuantity(${item.id}, -1)" aria-label="Quitar uno">−</button>
-        <strong>${item.quantity}</strong>
-        <button onclick="changeQuantity(${item.id}, 1)" aria-label="Agregar uno">+</button>
-      </div>
-    </div>
-  `).join("");
-
-  cartEmpty.classList.toggle("hidden", detailedCart.length > 0);
+function renderCart(){
+  const detail=cart.map(i=>({...products.find(p=>p.id===i.id),quantity:i.quantity})).filter(x=>x.id);
+  const count=detail.reduce((s,x)=>s+x.quantity,0);
+  const total=detail.reduce((s,x)=>s+x.price*x.quantity,0);
+  $("cartCount").textContent=count;
+  $("cartTotal").textContent=formatCLP(total);
+  $("cartEmpty").classList.toggle("hidden",detail.length>0);
+  $("cartItems").innerHTML=detail.map(x=>`<div class="cart-item">
+    <img src="${x.image}" alt="${x.name}">
+    <div><h4>${x.name}</h4><small>${formatCLP(x.price)} c/u</small></div>
+    <div class="quantity"><button onclick="changeQuantity(${x.id},-1)">−</button><strong>${x.quantity}</strong><button onclick="changeQuantity(${x.id},1)">+</button></div>
+  </div>`).join("");
 }
 
-function openCart() {
-  cartDrawer.classList.add("open");
-  overlay.classList.add("show");
-  cartDrawer.setAttribute("aria-hidden", "false");
-  document.body.style.overflow = "hidden";
+function openDrawer(){
+  $("cartDrawer").classList.add("open");
+  $("overlay").classList.add("show");
+  document.body.style.overflow="hidden";
+}
+function closeDrawer(){
+  $("cartDrawer").classList.remove("open");
+  if(!document.querySelector(".modal.open") && !$("filterPanel").classList.contains("open")) $("overlay").classList.remove("show");
+  document.body.style.overflow="";
+}
+function openModal(id){
+  $(id).classList.add("open");
+  $("overlay").classList.add("show");
+  document.body.style.overflow="hidden";
+}
+function closeModal(id){
+  $(id).classList.remove("open");
+  if(!$("cartDrawer").classList.contains("open") && !$("filterPanel").classList.contains("open")) $("overlay").classList.remove("show");
+  document.body.style.overflow="";
+}
+function openFilters(){
+  $("filterPanel").classList.add("open");
+  $("overlay").classList.add("show");
+}
+function closeFilters(){
+  $("filterPanel").classList.remove("open");
+  if(!$("cartDrawer").classList.contains("open") && !document.querySelector(".modal.open")) $("overlay").classList.remove("show");
 }
 
-function closeCart() {
-  cartDrawer.classList.remove("open");
-  overlay.classList.remove("show");
-  cartDrawer.setAttribute("aria-hidden", "true");
-  document.body.style.overflow = "";
-}
+$("searchInput").addEventListener("input",e=>{searchTerm=e.target.value;renderProducts()});
+$("sortSelect").addEventListener("change",e=>{currentSort=e.target.value;renderProducts()});
+$("brandFilter").addEventListener("change",renderProducts);
+$("stockFilter").addEventListener("change",renderProducts);
+$("priceFilter").addEventListener("input",e=>{$("priceLabel").textContent=`Hasta ${formatCLP(Number(e.target.value))}`;renderProducts()});
+$("categoryButtons").addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;
+  document.querySelectorAll(".categories button").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");selectedCategory=b.dataset.category;renderProducts();
+});
+$("clearFilters").addEventListener("click",()=>{
+  $("brandFilter").value="Todas";$("stockFilter").value="Todos";$("priceFilter").value=60000;
+  $("priceLabel").textContent="Hasta $60.000";searchTerm="";$("searchInput").value="";renderProducts();
+});
+$("openCart").addEventListener("click",openDrawer);
+$("closeCart").addEventListener("click",closeDrawer);
+$("openCheckout").addEventListener("click",()=>{
+  if(!cart.length){alert("Agrega productos al carrito.");return}
+  closeDrawer();openModal("checkoutModal");
+});
+$("toggleFilters").addEventListener("click",openFilters);
+$("closeFilters").addEventListener("click",closeFilters);
+$("overlay").addEventListener("click",()=>{
+  closeDrawer();closeFilters();document.querySelectorAll(".modal.open").forEach(m=>closeModal(m.id));
+});
+document.querySelectorAll("[data-close-modal]").forEach(b=>b.addEventListener("click",()=>closeModal(b.dataset.closeModal)));
 
-function checkoutWhatsApp() {
-  if (cart.length === 0) {
-    alert("Agrega productos al carrito antes de enviar tu pedido.");
-    return;
-  }
+$("checkoutForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const detail=cart.map(i=>({...products.find(p=>p.id===i.id),quantity:i.quantity})).filter(x=>x.id);
+  const total=detail.reduce((s,x)=>s+x.price*x.quantity,0);
+  const lines=detail.map(x=>`• ${x.quantity} x ${x.name} (${x.weight}) — ${formatCLP(x.price*x.quantity)}`).join("\n");
+  const message=`Hola Patitas Ya 🐾
 
-  const detailedCart = cart.map(item => ({
-    ...products.find(product => product.id === item.id),
-    quantity: item.quantity
-  }));
+Quiero realizar el siguiente pedido:
 
-  const totalPrice = detailedCart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const detail = detailedCart
-    .map(item => `• ${item.quantity} x ${item.name} — ${formatCLP(item.price * item.quantity)}`)
-    .join("\n");
+${lines}
 
-  const message = `Hola Patitas Ya 🐾\n\nQuiero realizar el siguiente pedido:\n${detail}\n\nTotal estimado: ${formatCLP(totalPrice)}\n\nMi dirección es: `;
+Total estimado: ${formatCLP(total)}
 
-  // Reemplazar por el número real de Patitas Ya, con código de país y sin +.
-  const phone = "56900000000";
-  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, "_blank");
-}
+Nombre: ${$("customerName").value}
+Sector o dirección: ${$("customerAddress").value}
+Forma de pago: ${$("paymentMethod").value}
+Observaciones: ${$("customerNotes").value || "Sin observaciones"}
 
-searchInput.addEventListener("input", event => {
-  searchTerm = event.target.value;
-  renderProducts();
+Quedo atento/a a la confirmación de stock y despacho.`;
+
+  // CAMBIA ESTE NÚMERO por el WhatsApp real, con código de país y sin el signo +.
+  const phone="56900000000";
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`,"_blank");
 });
 
-sortSelect.addEventListener("change", event => {
-  sortType = event.target.value;
-  renderProducts();
-});
-
-categoryButtons.addEventListener("click", event => {
-  const button = event.target.closest(".category");
-  if (!button) return;
-
-  document.querySelectorAll(".category").forEach(item => item.classList.remove("active"));
-  button.classList.add("active");
-  selectedCategory = button.dataset.category;
-  renderProducts();
-});
-
-document.getElementById("openCart").addEventListener("click", openCart);
-document.getElementById("closeCart").addEventListener("click", closeCart);
-document.getElementById("checkoutButton").addEventListener("click", checkoutWhatsApp);
-overlay.addEventListener("click", closeCart);
-
-renderProducts();
-renderCart();
+loadProducts();

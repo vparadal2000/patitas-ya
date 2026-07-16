@@ -1,0 +1,1 @@
+Sube aquí las imágenes y usa rutas como images/nombre-producto.webp en productos.json.
