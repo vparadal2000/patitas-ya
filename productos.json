@@ -20,7 +20,7 @@
   },
   {
     "id": 2,
-    "name": "Alimento para Perro Adulto",
+    "name": "Alimento para Perro Adulto BOKATO",
     "brand": "BOKATO",
     "category": "Perros",
     "stage": "Adulto",
@@ -35,7 +35,7 @@
     "oldPrice": null,
     "stock": 5,
     "featured": true,
-    "image": "images\bokato image.jpg"
+    "image": "images/bokato image.jpg"
   },
   {
     "id": 3,
