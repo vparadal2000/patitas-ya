@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patitas Admin | Gestor de imágenes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Nunito:wght@800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <header class="topbar">
+    <a href="../index.html" class="brand">🐾 <strong>Patitas Admin</strong></a>
+    <div class="actions">
+      <button id="exportJson" class="btn btn-primary">Exportar productos.json</button>
+      <button id="resetProgress" class="btn btn-soft">Reiniciar progreso</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <span class="eyebrow">GESTOR DE CATÁLOGO</span>
+        <h1>Encuentra y prepara las imágenes de tus productos</h1>
+        <p>
+          Busca el producto, abre una búsqueda de imágenes, sube la foto elegida y descarga
+          el archivo con el nombre exacto que necesita la tienda.
+        </p>
+      </div>
+      <div class="stats">
+        <article><strong id="totalProducts">0</strong><span>Productos</span></article>
+        <article><strong id="completedProducts">0</strong><span>Completados</span></article>
+        <article><strong id="pendingProducts">0</strong><span>Pendientes</span></article>
+      </div>
+    </section>
+
+    <section class="toolbar">
+      <input id="searchInput" type="search" placeholder="Buscar por nombre, marca o categoría...">
+      <select id="statusFilter">
+        <option value="all">Todos</option>
+        <option value="pending">Pendientes</option>
+        <option value="done">Completados</option>
+      </select>
+      <select id="categoryFilter">
+        <option value="all">Todas las categorías</option>
+      </select>
+    </section>
+
+    <section class="notice">
+      <strong>Flujo recomendado:</strong>
+      <span>1. Buscar imagen → 2. Revisar que corresponda al producto → 3. Subirla aquí → 4. Descargarla renombrada → 5. Subirla a <code>assets/images</code>.</span>
+    </section>
+
+    <section id="productList" class="product-list"></section>
+
+    <button id="loadMore" class="load-more">Mostrar más</button>
+  </main>
+
+  <template id="productTemplate">
+    <article class="product-row">
+      <div class="preview">
+        <img alt="">
+        <span class="preview-placeholder">Sin imagen</span>
+      </div>
+
+      <div class="product-info">
+        <span class="meta"></span>
+        <h2></h2>
+        <code class="filename"></code>
+      </div>
+
+      <div class="row-actions">
+        <button class="btn btn-search">Buscar imagen</button>
+        <label class="btn btn-soft upload-label">
+          Subir imagen
+          <input class="file-input" type="file" accept="image/*">
+        </label>
+        <button class="btn btn-download" disabled>Descargar renombrada</button>
+        <button class="btn btn-done">Marcar listo</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="admin.js"></script>
+</body>
+</html>
