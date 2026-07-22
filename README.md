@@ -107,3 +107,31 @@ Sube directamente a la raíz del repositorio:
 - `README.md`
 
 No subas una carpeta adicional que envuelva estos archivos.
+
+
+## Panel para buscar y preparar imágenes
+
+Esta versión incluye:
+
+```text
+admin/index.html
+```
+
+Para usarlo una vez publicado, entra a:
+
+```text
+https://vparadal2000.github.io/patitas-ya/admin/
+```
+
+El panel permite:
+
+- Buscar cada producto en Bing Imágenes.
+- Subir la imagen seleccionada.
+- Convertirla automáticamente a WebP.
+- Reducirla a un máximo de 1200 px.
+- Descargarla con el nombre exacto requerido.
+- Marcar productos completados.
+- Filtrar pendientes y completados.
+- Exportar un `productos.json` con el campo `imageReady`.
+
+Importante: revisa que la imagen corresponda exactamente al producto y que tengas autorización para utilizarla.
