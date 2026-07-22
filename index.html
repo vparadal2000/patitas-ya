@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Patitas Ya: alimentos y productos para mascotas con delivery.">
+  <meta name="theme-color" content="#3f6f59">
+  <title>Patitas Ya | Todo para tu mascota</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <div class="announcement">
+    <span>🚚 Delivery coordinado en Los Muermos y sectores cercanos</span>
+    <a href="#cobertura">Ver cobertura</a>
+  </div>
+
+  <header class="header">
+    <a class="brand" href="#inicio">
+      <span class="brand__mark">🐾</span>
+      <span class="brand__text">
+        <strong>Patitas Ya</strong>
+        <small>Delivery para mascotas</small>
+      </span>
+    </a>
+
+    <nav class="nav">
+      <a href="#destacados">Destacados</a>
+      <a href="#catalogo">Catálogo</a>
+      <a href="#categorias">Categorías</a>
+      <a href="#cobertura">Delivery</a>
+    </nav>
+
+    <button class="cart-trigger" id="openCart" type="button">
+      <span>Carrito</span>
+      <strong id="cartCount">0</strong>
+    </button>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="hero__content">
+        <span class="eyebrow">TU MASCOTERÍA A DOMICILIO</span>
+        <h1>Lo que más quieren, <em>sin salir de casa.</em></h1>
+        <p>
+          Encuentra alimentos, arenas, snacks y productos seleccionados para tus mascotas.
+          Compra rápido y coordina tu entrega directamente por WhatsApp.
+        </p>
+
+        <div class="hero__actions">
+          <a class="button button--primary" href="#destacados">Ver destacados</a>
+          <a class="button button--soft" href="#catalogo">Explorar catálogo</a>
+        </div>
+
+        <div class="trust-row">
+          <span>✓ Atención cercana</span>
+          <span>✓ Precios visibles</span>
+          <span>✓ Pedido simple</span>
+        </div>
+      </div>
+
+      <div class="hero__visual">
+        <div class="pet-bubble pet-bubble--dog">🐶</div>
+        <div class="pet-bubble pet-bubble--cat">🐱</div>
+        <div class="hero-sale">
+          <small>Compra fácil</small>
+          <strong>Agrega, revisa y envía</strong>
+          <span>Tu pedido llega directo a WhatsApp.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="search-panel">
+      <div>
+        <span class="eyebrow">¿QUÉ ESTÁS BUSCANDO?</span>
+        <h2>Encuentra el producto ideal</h2>
+      </div>
+
+      <label class="main-search">
+        <span>⌕</span>
+        <input id="searchInput" type="search" placeholder="Ej.: Proplan, alimento para gato, arena..." autocomplete="off">
+        <button id="clearSearch" type="button" aria-label="Limpiar búsqueda">×</button>
+      </label>
+    </section>
+
+    <section class="section" id="destacados">
+      <div class="section__heading">
+        <div>
+          <span class="eyebrow">SELECCIÓN PATITAS YA</span>
+          <h2>Productos destacados</h2>
+          <p>Una selección visible para ayudar a tus clientes a decidir más rápido.</p>
+        </div>
+        <a class="text-link" href="#catalogo">Ver todos →</a>
+      </div>
+
+      <div class="featured-grid" id="featuredGrid"></div>
+    </section>
+
+    <section class="category-section" id="categorias">
+      <div class="section__heading">
+        <div>
+          <span class="eyebrow">COMPRA POR CATEGORÍA</span>
+          <h2>Todo más fácil de encontrar</h2>
+        </div>
+      </div>
+      <div class="category-grid" id="categoryGrid"></div>
+    </section>
+
+    <section class="section catalog" id="catalogo">
+      <div class="section__heading catalog__title">
+        <div>
+          <span class="eyebrow">CATÁLOGO COMPLETO</span>
+          <h2>Productos para cada regalón</h2>
+          <p id="resultsCount">Cargando productos...</p>
+        </div>
+
+        <button class="filter-mobile" id="openFilters" type="button">Filtros</button>
+      </div>
+
+      <div class="catalog__layout">
+        <aside class="filters" id="filtersPanel">
+          <div class="filters__top">
+            <strong>Filtrar catálogo</strong>
+            <button id="closeFilters" type="button">×</button>
+          </div>
+
+          <label>
+            Categoría
+            <select id="categoryFilter">
+              <option value="Todas">Todas</option>
+            </select>
+          </label>
+
+          <label>
+            Marca
+            <select id="brandFilter">
+              <option value="Todas">Todas</option>
+            </select>
+          </label>
+
+          <label>
+            Ordenar
+            <select id="sortFilter">
+              <option value="recommended">Recomendados</option>
+              <option value="priceAsc">Menor precio</option>
+              <option value="priceDesc">Mayor precio</option>
+              <option value="name">Nombre A-Z</option>
+            </select>
+          </label>
+
+          <label class="check">
+            <input id="availableFilter" type="checkbox">
+            Solo con precio disponible
+          </label>
+
+          <button class="reset-filters" id="resetFilters" type="button">Limpiar filtros</button>
+        </aside>
+
+        <div>
+          <div class="active-search hidden" id="activeSearch"></div>
+          <div class="product-grid" id="productGrid"></div>
+          <div class="empty hidden" id="emptyState">
+            <span>🐾</span>
+            <h3>No encontramos coincidencias</h3>
+            <p>Prueba con otra marca, categoría o término.</p>
+          </div>
+          <button class="load-more hidden" id="loadMore" type="button">Mostrar más productos</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="delivery" id="cobertura">
+      <div class="delivery__copy">
+        <span class="eyebrow">DELIVERY LOCAL</span>
+        <h2>Tu pedido, coordinado contigo</h2>
+        <p>
+          Trabajamos con rutas de reparto para entregar de forma eficiente.
+          Escríbenos con tu sector y confirmamos día, horario y costo de despacho.
+        </p>
+        <a class="button button--primary" id="coverageWhatsapp" href="#" target="_blank">Consultar mi sector</a>
+      </div>
+
+      <div class="delivery__benefits">
+        <article><span>01</span><strong>Elige tus productos</strong><p>Busca, filtra y agrega al carrito.</p></article>
+        <article><span>02</span><strong>Envía el pedido</strong><p>Recibimos el resumen por WhatsApp.</p></article>
+        <article><span>03</span><strong>Coordinamos entrega</strong><p>Confirmamos stock, ruta y despacho.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="brand brand--footer">
+      <span class="brand__mark">🐾</span>
+      <span class="brand__text"><strong>Patitas Ya</strong><small>Delivery para mascotas</small></span>
+    </div>
+    <p>Precios, stock y despacho sujetos a confirmación.</p>
+  </footer>
+
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="cart" id="cartDrawer">
+    <div class="cart__header">
+      <div><span class="eyebrow">TU COMPRA</span><h2>Carrito</h2></div>
+      <button id="closeCart" type="button">×</button>
+    </div>
+    <div class="cart__items" id="cartItems"></div>
+    <div class="cart__empty" id="cartEmpty"><span>🛍️</span><p>Aún no agregas productos.</p></div>
+    <div class="cart__footer">
+      <div class="cart__total"><span>Total estimado</span><strong id="cartTotal">$0</strong></div>
+      <button class="checkout-button" id="checkoutButton" type="button">Pedir por WhatsApp</button>
+      <small>Confirmaremos stock y valor del despacho.</small>
+    </div>
+  </aside>
+
+  <section class="modal" id="productModal">
+    <button class="modal__close" id="closeProductModal" type="button">×</button>
+    <div id="productDetail"></div>
+  </section>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
