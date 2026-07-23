@@ -1,0 +1,1 @@
+Sube aquí las imágenes de categorías. Luego define sus rutas desde admin > Configuración.

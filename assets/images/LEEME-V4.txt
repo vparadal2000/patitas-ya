@@ -1,0 +1,6 @@
+ARCHIVOS RECOMENDADOS:
+- logo-patitas.png: logo transparente, idealmente cuadrado o horizontal.
+- hero-patitas.jpg: imagen tranquila de mascotas/naturaleza, idealmente 1800x800.
+- categorias/*.png: íconos o imágenes cuadradas con fondo transparente.
+
+Todas las rutas se pueden cambiar desde /admin/ > Configuración.
