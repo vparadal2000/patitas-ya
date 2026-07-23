@@ -135,3 +135,24 @@ El panel permite:
 - Exportar un `productos.json` con el campo `imageReady`.
 
 Importante: revisa que la imagen corresponda exactamente al producto y que tengas autorización para utilizarla.
+
+
+## Mantenedor de detalles
+
+El panel `admin/` ahora permite editar:
+
+- Nombre
+- Marca
+- Categoría
+- Formato o peso
+- Precio
+- Precio anterior
+- Stock
+- Etiqueta
+- Descripción corta
+- Descripción completa
+- Beneficios
+- Producto destacado
+- Estado de imagen
+
+Los cambios se guardan temporalmente en el navegador. Para publicarlos, usa **Exportar productos.json** y reemplaza `data/productos.json` en GitHub.

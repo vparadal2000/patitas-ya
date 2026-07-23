@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Patitas Admin | Gestor de imágenes</title>
+  <title>Patitas Admin | Productos e imágenes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Nunito:wght@800;900&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
     <a href="../index.html" class="brand">🐾 <strong>Patitas Admin</strong></a>
     <div class="actions">
       <button id="exportJson" class="btn btn-primary">Exportar productos.json</button>
-      <button id="resetProgress" class="btn btn-soft">Reiniciar progreso</button>
+      <button id="resetChanges" class="btn btn-soft">Descartar cambios locales</button>
     </div>
   </header>
 
@@ -22,16 +22,16 @@
     <section class="hero">
       <div>
         <span class="eyebrow">GESTOR DE CATÁLOGO</span>
-        <h1>Encuentra y prepara las imágenes de tus productos</h1>
+        <h1>Administra imágenes y detalles de producto</h1>
         <p>
-          Busca el producto, abre una búsqueda de imágenes, sube la foto elegida y descarga
-          el archivo con el nombre exacto que necesita la tienda.
+          Edita precios, descripciones, beneficios, productos destacados e imágenes.
+          Luego exporta el archivo actualizado y reemplaza <code>data/productos.json</code>.
         </p>
       </div>
       <div class="stats">
         <article><strong id="totalProducts">0</strong><span>Productos</span></article>
-        <article><strong id="completedProducts">0</strong><span>Completados</span></article>
-        <article><strong id="pendingProducts">0</strong><span>Pendientes</span></article>
+        <article><strong id="completedProducts">0</strong><span>Con imagen</span></article>
+        <article><strong id="editedProducts">0</strong><span>Editados</span></article>
       </div>
     </section>
 
@@ -39,8 +39,9 @@
       <input id="searchInput" type="search" placeholder="Buscar por nombre, marca o categoría...">
       <select id="statusFilter">
         <option value="all">Todos</option>
-        <option value="pending">Pendientes</option>
-        <option value="done">Completados</option>
+        <option value="pending">Sin imagen</option>
+        <option value="done">Con imagen</option>
+        <option value="edited">Editados</option>
       </select>
       <select id="categoryFilter">
         <option value="all">Todas las categorías</option>
@@ -48,36 +49,88 @@
     </section>
 
     <section class="notice">
-      <strong>Flujo recomendado:</strong>
-      <span>1. Buscar imagen → 2. Revisar que corresponda al producto → 3. Subirla aquí → 4. Descargarla renombrada → 5. Subirla a <code>assets/images</code>.</span>
+      <strong>Importante:</strong>
+      <span>Los cambios se guardan temporalmente en este navegador. Para publicarlos debes presionar <b>Exportar productos.json</b> y reemplazar el archivo del repositorio.</span>
     </section>
 
     <section id="productList" class="product-list"></section>
-
     <button id="loadMore" class="load-more">Mostrar más</button>
   </main>
 
   <template id="productTemplate">
     <article class="product-row">
-      <div class="preview">
-        <img alt="">
-        <span class="preview-placeholder">Sin imagen</span>
+      <div class="product-main">
+        <div class="preview">
+          <img alt="">
+          <span class="preview-placeholder">Sin imagen</span>
+        </div>
+
+        <div class="product-info">
+          <span class="meta"></span>
+          <h2></h2>
+          <code class="filename"></code>
+        </div>
+
+        <div class="row-actions">
+          <button class="btn btn-search">Buscar imagen</button>
+          <label class="btn btn-soft upload-label">
+            Subir imagen
+            <input class="file-input" type="file" accept="image/*">
+          </label>
+          <button class="btn btn-download" disabled>Descargar imagen</button>
+          <button class="btn btn-edit">Editar detalles</button>
+        </div>
       </div>
 
-      <div class="product-info">
-        <span class="meta"></span>
-        <h2></h2>
-        <code class="filename"></code>
-      </div>
+      <div class="editor hidden">
+        <div class="form-grid">
+          <label>Nombre
+            <input class="field-name" type="text">
+          </label>
+          <label>Marca
+            <input class="field-brand" type="text">
+          </label>
+          <label>Categoría
+            <input class="field-category" type="text">
+          </label>
+          <label>Formato / peso
+            <input class="field-weight" type="text">
+          </label>
+          <label>Precio
+            <input class="field-price" type="number" min="0" step="1">
+          </label>
+          <label>Precio anterior
+            <input class="field-old-price" type="number" min="0" step="1">
+          </label>
+          <label>Stock
+            <input class="field-stock" type="number" min="0" step="1">
+          </label>
+          <label>Etiqueta
+            <input class="field-badge" type="text" placeholder="Más vendido, Oferta...">
+          </label>
+        </div>
 
-      <div class="row-actions">
-        <button class="btn btn-search">Buscar imagen</button>
-        <label class="btn btn-soft upload-label">
-          Subir imagen
-          <input class="file-input" type="file" accept="image/*">
+        <label>Descripción corta
+          <textarea class="field-short" rows="2" placeholder="Resumen visible en la tarjeta o ficha."></textarea>
         </label>
-        <button class="btn btn-download" disabled>Descargar renombrada</button>
-        <button class="btn btn-done">Marcar listo</button>
+
+        <label>Descripción completa
+          <textarea class="field-description" rows="5" placeholder="Características, ingredientes, recomendaciones, etc."></textarea>
+        </label>
+
+        <label>Beneficios
+          <textarea class="field-benefits" rows="4" placeholder="Un beneficio por línea"></textarea>
+        </label>
+
+        <div class="checks">
+          <label><input class="field-featured" type="checkbox"> Producto destacado</label>
+          <label><input class="field-image-ready" type="checkbox"> Imagen lista</label>
+        </div>
+
+        <div class="editor-actions">
+          <button class="btn btn-primary btn-save">Guardar cambios</button>
+          <button class="btn btn-soft btn-cancel">Cerrar</button>
+        </div>
       </div>
     </article>
   </template>
