@@ -156,3 +156,37 @@ El panel `admin/` ahora permite editar:
 - Estado de imagen
 
 Los cambios se guardan temporalmente en el navegador. Para publicarlos, usa **Exportar productos.json** y reemplaza `data/productos.json` en GitHub.
+
+
+# Patitas Admin 2.0
+
+La carpeta `admin/` ahora contiene un panel completo con:
+
+- Dashboard de productos, imágenes y pendientes.
+- Mantenedor de productos.
+- Creación y eliminación de productos.
+- Precio, precio anterior y stock.
+- Descripción corta y completa.
+- Beneficios.
+- Búsqueda y preparación de imágenes.
+- Conversión y renombrado a WebP.
+- Productos destacados.
+- Textos promocionales de la portada.
+- Datos de WhatsApp y tienda.
+- Guardado automático en el navegador.
+- Exportación de `productos.json` y `config.json`.
+
+## Publicación
+
+GitHub Pages es un alojamiento estático, por lo que el botón **Preparar publicación** descarga los archivos modificados. Debes reemplazarlos en:
+
+```text
+data/productos.json
+data/config.json
+```
+
+Luego realiza Commit y Push origin desde GitHub Desktop.
+
+## Imágenes y descarte de borradores
+
+El botón para descartar cambios locales borra solamente los borradores del navegador. El panel intenta cargar siempre las imágenes reales ubicadas en `assets/images`, por lo que no se ocultan solo por eliminar el estado local.

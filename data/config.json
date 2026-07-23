@@ -1,0 +1,18 @@
+{
+  "storeName": "Patitas Ya",
+  "whatsapp": "56956736785",
+  "deliveryText": "Delivery coordinado en Los Muermos y sectores cercanos",
+  "heroTitle": "Lo que más quieren, sin salir de casa.",
+  "heroSubtitle": "Alimentos, arenas, snacks y productos seleccionados para tus mascotas.",
+  "announcement": "🚚 Delivery coordinado en Los Muermos y sectores cercanos",
+  "promotions": [
+    {
+      "id": 1,
+      "active": true,
+      "title": "Productos destacados",
+      "subtitle": "Revisa nuestras recomendaciones y productos más buscados.",
+      "buttonText": "Ver destacados",
+      "buttonLink": "#destacados"
+    }
+  ]
+}

@@ -1,10 +1,12 @@
 const CONFIG={
   whatsapp:"56956736785",
   productsUrl:"data/productos.json",
+  configUrl:"data/config.json",
   pageSize:24
 };
 
 let products=[];
+let siteConfig={};
 let cart=JSON.parse(localStorage.getItem("patitasYaCartModern"))||[];
 let visibleCount=CONFIG.pageSize;
 let searchTerm="";
@@ -14,9 +16,10 @@ const money=value=>value==null?"Consultar":new Intl.NumberFormat("es-CL",{style:
 
 async function init(){
   try{
-    const response=await fetch(CONFIG.productsUrl);
+    const [response,configResponse]=await Promise.all([fetch(CONFIG.productsUrl),fetch(CONFIG.configUrl)]);
     if(!response.ok)throw new Error("No se pudo cargar productos.json");
     products=await response.json();
+    if(configResponse.ok){siteConfig=await configResponse.json();applySiteConfig();}
     buildFilters();
     renderCategories();
     renderFeatured();
@@ -27,6 +30,19 @@ async function init(){
     console.error(error);
     $("resultsCount").textContent="No fue posible cargar el catálogo.";
   }
+}
+
+
+function applySiteConfig(){
+  if(siteConfig.whatsapp)CONFIG.whatsapp=siteConfig.whatsapp;
+  const announcement=document.querySelector(".announcement span");
+  if(announcement&&siteConfig.announcement)announcement.textContent=siteConfig.announcement;
+  const heroTitle=document.querySelector(".hero h1");
+  if(heroTitle&&siteConfig.heroTitle)heroTitle.textContent=siteConfig.heroTitle;
+  const heroText=document.querySelector(".hero__content > p");
+  if(heroText&&siteConfig.heroSubtitle)heroText.textContent=siteConfig.heroSubtitle;
+  const deliveryText=document.querySelector(".delivery__copy > p");
+  if(deliveryText&&siteConfig.deliveryText)deliveryText.textContent=siteConfig.deliveryText;
 }
 
 function buildFilters(){
