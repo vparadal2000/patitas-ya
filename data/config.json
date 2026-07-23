@@ -1,7 +1,7 @@
 {
   "storeName": "Patitas Ya",
   "whatsapp": "56940905205",
-  "deliveryText": "Delivery coordinado en Los Muermos, Las Quemas, Puerto Montt, Puerto Varas y sectores cercanos",
+  "deliveryText": "",
   "heroTitle": "Lo que más quieren, sin salir de casa.",
   "heroSubtitle": "Alimentos, arenas, snacks y productos seleccionados para tus mascotas.",
   "announcement": "🚚 Delivery coordinado en Los Muermos, Las Quemas, Puerto Montt, Puerto Varas y sectores cercanos",
@@ -14,5 +14,18 @@
       "buttonText": "Ver destacados",
       "buttonLink": "#destacados"
     }
-  ]
+  ],
+  "tagline": "",
+  "logo": "",
+  "heroImage": "",
+  "cartIcon": "🛒",
+  "categoryImages": {
+    "Todos": "",
+    "Aves": "",
+    "Gatos": "",
+    "Higiene": "",
+    "Perros": "",
+    "Roedores": "",
+    "Snacks": ""
+  }
 }
