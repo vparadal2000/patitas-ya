@@ -155,9 +155,10 @@
     "price": 42990,
     "oldPrice": null,
     "stock": 10,
-    "featured": false,
+    "featured": true,
     "badge": "",
-    "image": "assets/images/vitalcan-20kg-perro-adulto-cordero.webp"
+    "image": "assets/images/vitalcan-20kg-perro-adulto-cordero.webp",
+    "imageReady": true
   },
   {
     "id": 11,
