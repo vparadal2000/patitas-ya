@@ -177,8 +177,25 @@
             <label>Número de WhatsApp
               <input id="whatsapp" type="text">
             </label>
+            <label>Eslogan
+              <input id="tagline" type="text">
+            </label>
+            <label>Ruta del logo
+              <input id="logoPath" type="text" placeholder="assets/images/logo-patitas.png">
+            </label>
+            <label>Ruta de imagen del banner
+              <input id="heroImagePath" type="text" placeholder="assets/images/hero-patitas.jpg">
+            </label>
+            <label>Ícono del carrito
+              <input id="cartIconField" type="text" placeholder="🛒">
+            </label>
           </div>
-          <button class="btn btn-primary" id="saveSettings">Guardar configuración</button>
+          <div class="category-image-config">
+          <h3>Imágenes de categorías</h3>
+          <p>Escribe la ruta de cada imagen. También puedes dejarla vacía para usar el ícono predeterminado.</p>
+          <div class="form-grid form-grid--2" id="categoryImageFields"></div>
+        </div>
+        <button class="btn btn-primary" id="saveSettings">Guardar configuración</button>
         </article>
 
         <article class="panel danger-panel">

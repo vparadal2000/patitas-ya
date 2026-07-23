@@ -190,3 +190,33 @@ Luego realiza Commit y Push origin desde GitHub Desktop.
 ## Imágenes y descarte de borradores
 
 El botón para descartar cambios locales borra solamente los borradores del navegador. El panel intenta cargar siempre las imágenes reales ubicadas en `assets/images`, por lo que no se ocultan solo por eliminar el estado local.
+
+
+# Patitas Ya V4
+
+Mejoras principales:
+
+- Buscador ubicado inmediatamente antes del catálogo.
+- Hero con imagen de fondo configurable.
+- Logo configurable.
+- Ícono de carrito visible en botón, panel y carrito vacío.
+- Tarjetas compactas sin espacio excesivo entre nombre y precio.
+- Imágenes configurables para categorías.
+- Fondo blanco en fotografías y bordes verdes suaves para mejorar contraste.
+- Administrador actualizado con rutas de logo, banner, carrito y categorías.
+
+## Archivos visuales sugeridos
+
+```text
+assets/images/logo-patitas.png
+assets/images/hero-patitas.jpg
+assets/images/categorias/perros.png
+assets/images/categorias/gatos.png
+...
+```
+
+Las rutas pueden cambiarse desde:
+
+```text
+/admin/ → Configuración
+```

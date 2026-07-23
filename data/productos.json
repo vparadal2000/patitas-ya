@@ -155,7 +155,7 @@
     "price": 42990,
     "oldPrice": null,
     "stock": 10,
-    "featured": true,
+    "featured": false,
     "badge": "",
     "image": "assets/images/vitalcan-20kg-perro-adulto-cordero.webp"
   },
@@ -635,7 +635,7 @@
     "price": 56990,
     "oldPrice": null,
     "stock": 10,
-    "featured": false,
+    "featured": true,
     "badge": "Más vendido",
     "image": "assets/images/tow-6-6kg-gato-canyon-river-trucha.webp"
   },
@@ -875,7 +875,7 @@
     "price": 56990,
     "oldPrice": null,
     "stock": 10,
-    "featured": false,
+    "featured": true,
     "badge": "Más vendido",
     "image": "assets/images/tow-6-6kg-gato-venado.webp"
   },
@@ -907,7 +907,7 @@
     "price": 56990,
     "oldPrice": null,
     "stock": 10,
-    "featured": false,
+    "featured": true,
     "badge": "Más vendido",
     "image": "assets/images/tow-6-6kg-gato-pato.webp"
   },
@@ -971,7 +971,7 @@
     "price": 59990,
     "oldPrice": null,
     "stock": 10,
-    "featured": false,
+    "featured": true,
     "badge": "Más vendido",
     "image": "assets/images/proplan-12kg-perro-adulto-raza-mediana.webp"
   },
@@ -1547,7 +1547,7 @@
     "price": 45990,
     "oldPrice": null,
     "stock": 10,
-    "featured": false,
+    "featured": true,
     "badge": "Más vendido",
     "image": "assets/images/balanced-7-5kg-gato-natural-recipe-trucha-patagonica.webp"
   },
@@ -1773,8 +1773,7 @@
     "stock": 10,
     "featured": false,
     "badge": "",
-    "image": "assets/images/alaska-10kg-cachorro.webp",
-    "imageReady": false
+    "image": "assets/images/alaska-10kg-cachorro.webp"
   },
   {
     "id": 112,
@@ -1786,12 +1785,11 @@
     "description": "",
     "benefits": [],
     "price": 47990,
-    "oldPrice": 49990,
+    "oldPrice": null,
     "stock": 10,
     "featured": true,
     "badge": "Más vendido",
-    "image": "assets/images/alaska-15kg-adulto-todas-las-razas.webp",
-    "imageReady": true
+    "image": "assets/images/alaska-15kg-adulto-todas-las-razas.webp"
   },
   {
     "id": 113,
@@ -2205,7 +2203,7 @@
     "price": 25990,
     "oldPrice": null,
     "stock": 10,
-    "featured": false,
+    "featured": true,
     "badge": "Más vendido",
     "image": "assets/images/brit-care-3kg-perro-adulto-salmon.webp"
   },
@@ -2573,7 +2571,7 @@
     "price": 13990,
     "oldPrice": null,
     "stock": 10,
-    "featured": false,
+    "featured": true,
     "badge": "Más vendido",
     "image": "assets/images/arena-10kg-stay-happy-cafe.webp"
   },
@@ -2589,7 +2587,7 @@
     "price": 13990,
     "oldPrice": null,
     "stock": 10,
-    "featured": false,
+    "featured": true,
     "badge": "Más vendido",
     "image": "assets/images/arena-10kg-stay-happy-lavanda.webp"
   },
@@ -2717,7 +2715,7 @@
     "price": 21990,
     "oldPrice": null,
     "stock": 10,
-    "featured": false,
+    "featured": true,
     "badge": "Más vendido",
     "image": "assets/images/royal-canin-1-5-gato-indoor.webp"
   },

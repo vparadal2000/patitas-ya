@@ -316,6 +316,24 @@ function fillConfiguration(){
   $("deliveryText").value=config.deliveryText||"";
   $("storeName").value=config.storeName||"";
   $("whatsapp").value=config.whatsapp||"";
+  $("tagline").value=config.tagline||"";
+  $("logoPath").value=config.logo||"";
+  $("heroImagePath").value=config.heroImage||"";
+  $("cartIconField").value=config.cartIcon||"🛒";
+  renderCategoryImageFields();
+}
+
+
+function renderCategoryImageFields(){
+  const categories=["Todos",...[...new Set(products.map(p=>p.category))].sort()];
+  const box=$("categoryImageFields");
+  if(!box)return;
+  box.innerHTML=categories.map(c=>`<label>${c}<input class="category-image-field" data-category="${c}" value="${config.categoryImages?.[c]||""}" placeholder="assets/images/categorias/${c.toLowerCase()}.png"></label>`).join("");
+}
+function readCategoryImageFields(){
+  const result={};
+  document.querySelectorAll(".category-image-field").forEach(input=>result[input.dataset.category]=input.value.trim());
+  return result;
 }
 
 function saveConfigForm(){
@@ -325,7 +343,12 @@ function saveConfigForm(){
     announcement:$("announcement").value.trim(),
     deliveryText:$("deliveryText").value.trim(),
     storeName:$("storeName").value.trim(),
-    whatsapp:$("whatsapp").value.trim()
+    whatsapp:$("whatsapp").value.trim(),
+    tagline:$("tagline").value.trim(),
+    logo:$("logoPath").value.trim(),
+    heroImage:$("heroImagePath").value.trim(),
+    cartIcon:$("cartIconField").value.trim()||"🛒",
+    categoryImages:readCategoryImageFields()
   });
   persist();alert("Configuración guardada localmente.");
 }
